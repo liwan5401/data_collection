@@ -1,0 +1,20 @@
+{
+  "target_url": "https://www.linkedin.com/search/results/CONTENT/?keywords=future%20work%20in%20AI%20area&origin=FACETED_SEARCH&sid=.ll&sortBy=%22relevance%22",
+  "cookies": "cookies.json",
+  "output": "data/gates_new.csv",
+  "max_posts": 500,
+  "scroll_attempts": 200,
+  "max_no_new_posts": 3,
+  "scroll_pause": 4.0,
+  "chrome_binary": null,
+  "chromedriver": null,
+  "show_browser": false,
+  "disable_gpu": false,
+  "llm_mode": "local",
+  "openai_model": "gpt-4o",
+  "openai_base_url": "https://api.openai.com/v1",
+  "openai_batch_size": 5,
+  "openai_rpm": 8,
+  "openai_max_retries": 5,
+  "openai_backoff_seconds": 3
+}

@@ -1,0 +1,27 @@
+{
+  "actor_id": "BHzefUZlZRKWxkTck",
+  "location": "Canada",
+  "rows": 100,
+  "published_after": "",
+  "titles": [
+    "AI",
+    "machine learning",
+    "information technology",
+    "IT innovation"
+  ],
+  "csv_path": "output/jobs.csv",
+  "table_limit": 100,
+  "skill_extractor": "openai",
+  "openai_model": "gpt-4o",
+  "openai_base_url": "https://api.openai.com/v1",
+  "openai_requests_per_minute": 8,
+  "openai_max_retries": 6,
+  "openai_backoff_seconds": 4,
+  "openai_batch_size": 5,
+  "proxy": {
+    "useApifyProxy": true,
+    "apifyProxyGroups": [
+      "RESIDENTIAL"
+    ]
+  }
+}
