@@ -1,17 +1,20 @@
 {
   "actor_id": "BHzefUZlZRKWxkTck",
-  "location": "Canada",
+  "location": "United States",
   "rows": 100,
   "published_after": "",
   "titles": [
     "AI",
     "machine learning",
-    "information technology",
-    "IT innovation"
+    "artificial intelligence",
+    "deep learning",
+    "generative AI",
+    "AI strategy",
+    "AI governance"
   ],
-  "csv_path": "output/jobs.csv",
+  "csv_path": "jobs.csv",
   "table_limit": 100,
-  "skill_extractor": "openai",
+  "skill_extractor": "heuristic",
   "openai_model": "gpt-4o",
   "openai_base_url": "https://api.openai.com/v1",
   "openai_requests_per_minute": 8,

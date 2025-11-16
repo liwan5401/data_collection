@@ -21,9 +21,8 @@ from apify_client import ApifyClient
 
 DEFAULT_ACTOR_ID = "BHzefUZlZRKWxkTck"
 DEFAULT_TITLE_QUERY = (
-    '("future of work" OR "future of jobs" OR "emerging jobs" OR "future jobs" '
-    'OR "new roles" OR "new skills" OR "future of skills" OR "future skills") '
-    'AND ("information technology" OR IT OR "digital" OR "AI")'
+    '(("AI" OR "artificial intelligence" OR "machine learning" OR '
+    '"deep learning" OR "generative AI" OR "AI strategy" OR "AI governance"))'
 )
 DEFAULT_LOCATION = "United States"
 DEFAULT_ROWS = 50
@@ -416,6 +415,10 @@ def build_run_input(args: argparse.Namespace, title_query: str, proxy_config: Op
 
 
 def fetch_jobs(client: ApifyClient, actor_id: str, run_input: Dict[str, Any]) -> List[Dict[str, Any]]:
+    
+    print("========== fetch_jobs ===========")
+    print(run_input)
+    
     run = client.actor(actor_id).call(run_input=run_input)
     dataset_client = client.dataset(run["defaultDatasetId"])
     return list(dataset_client.iterate_items())
@@ -1238,4 +1241,4 @@ def main(argv: Optional[Iterable[str]] = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

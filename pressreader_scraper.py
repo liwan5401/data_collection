@@ -506,8 +506,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     logging.basicConfig(level=getattr(logging, args.log_level.upper(), logging.INFO), format="%(asctime)s %(levelname)s %(message)s")
 
     config_path = Path(args.config).expanduser() if args.config else None
-    if not config_path and Path("pressreader_config.json").exists():
-        config_path = Path("pressreader_config.json")
+    if not config_path:
+        default_candidates = [
+            Path("pressreader_config.json"),
+            Path(__file__).resolve().parent / "pressreader_config.json",
+        ]
+        for candidate in default_candidates:
+            if candidate.exists():
+                config_path = candidate
+                break
     config = load_config(config_path) if config_path else {}
 
     options = {
