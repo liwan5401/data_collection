@@ -17,6 +17,8 @@ from typing import Iterable, Iterator, List, Mapping, Optional, Sequence, Set, T
 from xml.etree import ElementTree as ET
 
 import requests
+from datetime import datetime
+from email.utils import parsedate_to_datetime
 
 try:
     import feedparser  # type: ignore
@@ -263,11 +265,54 @@ def entry_link(entry: Mapping[str, object]) -> str:
     return ""
 
 
+DATE_INPUT_FORMATS = [
+    "%a, %d %b %Y %H:%M:%S %z",
+    "%Y-%m-%dT%H:%M:%S%z",
+    "%Y-%m-%d %H:%M:%S",
+    "%Y-%m-%d",
+]
+
+
+def _format_date_value(value: object) -> Optional[str]:
+    if value is None:
+        return None
+    if isinstance(value, time.struct_time):
+        try:
+            dt = datetime.fromtimestamp(time.mktime(value))
+            return dt.strftime("%d/%m/%Y")
+        except (ValueError, OverflowError):
+            return None
+    if isinstance(value, datetime):
+        return value.strftime("%d/%m/%Y")
+    if isinstance(value, str):
+        value = value.strip()
+        if not value:
+            return None
+        try:
+            dt = parsedate_to_datetime(value)
+            if dt.tzinfo:
+                dt = dt.astimezone(tz=None)
+            return dt.strftime("%d/%m/%Y")
+        except (ValueError, TypeError):
+            pass
+        for fmt in DATE_INPUT_FORMATS:
+            try:
+                dt = datetime.strptime(value, fmt)
+                return dt.strftime("%d/%m/%Y")
+            except ValueError:
+                continue
+    return None
+
+
 def entry_published(entry: Mapping[str, object]) -> str:
+    for field in ("published_parsed", "updated_parsed", "created_parsed"):
+        formatted = _format_date_value(entry.get(field))
+        if formatted:
+            return formatted
     for field in ("published", "updated", "created"):
-        value = entry.get(field)
-        if isinstance(value, str) and value.strip():
-            return value.strip()
+        formatted = _format_date_value(entry.get(field))
+        if formatted:
+            return formatted
     return ""
 
 
@@ -300,6 +345,9 @@ def process_feeds(
     encoding: str,
 ) -> int:
     normalized_keywords = [normalize_keyword(kw) for kw in keywords if kw.strip()]
+    normalized_keywords = [kw for kw in normalized_keywords if kw == "ai"]
+    if not normalized_keywords:
+        normalized_keywords = ["ai"]
     if not normalized_keywords:
         LOGGER.error("No valid keywords provided.")
         return 0
@@ -332,7 +380,7 @@ def process_feeds(
                     "entry_url": entry_link(entry),
                     "published": sanitize_for_csv(entry_published(entry)),
                     "categories": sanitize_for_csv(entry_categories(entry)),
-                    "matched_keywords": ", ".join(sorted(set(hits))),
+                    "matched_keywords": "AI",
                     "article_text": sanitize_for_csv(plain_text),
                 }
                 writer.writerow(row)

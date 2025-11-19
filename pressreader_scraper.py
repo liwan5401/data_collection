@@ -59,6 +59,7 @@ CSV_FIELDNAMES = [
     "classification_tags",
     "related_titles",
     "images",
+    "article_url",
     "article_text",
 ]
 
@@ -272,6 +273,41 @@ def join_list(items: Optional[Iterable[str]], *, sep: str = "; ") -> str:
     return sep.join(filter(None, cleaned))
 
 
+def resolve_article_url(
+    item: Mapping[str, Any],
+    meta: Mapping[str, Any],
+    detail: Optional[Mapping[str, Any]],
+) -> str:
+    """Attempt to determine a shareable URL for the article."""
+
+    def extract_url(source: Optional[Mapping[str, Any]]) -> Optional[str]:
+        if not isinstance(source, Mapping):
+            return None
+        for key in ("ShareUrl", "ArticleUrl", "Url"):
+            value = source.get(key)
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+        return None
+
+    for candidate in (meta, detail, item):
+        url = extract_url(candidate)
+        if url:
+            return url
+
+    region_id = str(item.get("RegionId") or meta.get("Id") or "")
+    if not region_id:
+        return ""
+    issue = meta.get("Issue") if isinstance(meta.get("Issue"), Mapping) else {}
+    issue_url = ""
+    if issue:
+        issue_url = issue.get("Url") or issue.get("ShareUrl") or ""
+    if issue_url:
+        if issue_url.endswith("/"):
+            return f"{issue_url}{region_id}"
+        return f"{issue_url}/{region_id}"
+    return f"https://www.pressreader.com/article/{region_id}"
+
+
 def collect_articles(
     client: PressReaderClient,
     options: Mapping[str, Any],
@@ -307,8 +343,6 @@ def collect_articles(
         remaining -= len(items)
         if highlights == [] and isinstance(page.get("Highlights"), list):
             highlights = [normalize_text(str(h)) for h in page["Highlights"] if h]
-        if len(items) < page_size:
-            break
         if page_pause > 0:
             LOGGER.debug("Sleeping %.2fs between search pages.", page_pause)
             time.sleep(page_pause)
@@ -431,6 +465,8 @@ def build_row(
     elif meta.get("TotalTextLength") is not None:
         total_text_length = meta.get("TotalTextLength")
 
+    article_url = resolve_article_url(item, meta, detail)
+
     return {
         "search_text": search_text,
         "highlights": highlights,
@@ -445,6 +481,7 @@ def build_row(
         "page_name": meta.get("PageName", ""),
         "section": meta.get("Section", ""),
         "title": meta.get("Title", ""),
+        "article_url": article_url,
         "subtitle": meta.get("Subtitle", ""),
         "hyphenated_title": meta.get("HyphenatedTitle", ""),
         "language": meta.get("Language", ""),
@@ -669,4 +706,4 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

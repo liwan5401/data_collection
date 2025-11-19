@@ -1,6 +1,6 @@
 {
-  "auth_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExMzU3MzUwOCwiYWIiOiJia3FORmlxWGdrT3Jadk9rLUJ0UGdCc19iYVZYb1RVTVlBMGJyTGNWWHZRS213X255WlRrWDBIY3Q0YUxFSTQ4QlFvei1PSFJVNjQyN1NzcVpWZUJfQSEhIiwiYWMiOjExMzU3MzUwOCwiYWQiOjEsImFlIjoyMDg0LCJhZiI6MSwiYWkiOjM0MTYsImFqIjoyMTg3LCJhayI6NjcwODI2NzI5LCJhbSI6ImVuLXVzIiwiYW4iOiJlbi1VUyIsImFwIjotMTE5ODI5ODIzNSwiZXhwIjoxNzYxMDk3MjExLCJpc3MiOiJwciJ9.MjnpOma4mpyzpPWE-GTurc2mUrRV3IjIMAyeBbd-mH0",
-  "search_text": "future AI jobs and the skills required for them.",
+  "auth_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExNDE2Mzc3MSwiYWIiOiJ2QzRDOER4b2dYMTg3OWUyaEwwcTdobU1SNWlCZG51cDQ3T3ZLb3ZmOGJNWXVUb3lib2ZreGd2QWtGRV9yTWFYdDM4elFJb1VBcUdJeEgzUmExM1VqQSEhIiwiYWMiOjExNDE2Mzc3MSwiYWQiOjEsImFlIjoyMDg0LCJhZiI6MSwiYWkiOjM0MTYsImFqIjoyMTg3LCJhayI6NTkwODE0NDc0LCJhbSI6ImVuLXVzIiwiYW4iOiJlbi1VUyIsImFwIjotMTkwMDI2NjgyNywiZXhwIjoxNzYzMzUxNDUwLCJpc3MiOiJwciJ9.jal7dH3yBkMmMvYytEIznvPooPwWgIZLGqO-kzildc0",
+  "search_text": "AI",
   "search_author": "",
   "languages": "en",
   "newspapers": "",
@@ -11,15 +11,15 @@
   "search_for": "All",
   "order_by": "Relevance",
   "hide_same": 0,
-  "start_date": "2025-08-01",
-  "stop_date": "2025-10-18",
+  "start_date": "2025-10-01",
+  "stop_date": "2025-11-16",
   "page_size": 20,
-  "max_results": 600,
+  "max_results": 30000,
   "delay": 0.75,
   "jitter": 0.35,
   "page_pause": 1.0,
   "batch_pause": 1.0,
   "detail_pause": 1.2,
   "timeout": 30,
-  "output": "output/pressreader_articles.csv"
+  "output": "pressreader_AI2.csv"
 }

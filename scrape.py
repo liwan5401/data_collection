@@ -378,8 +378,9 @@ def apply_config(args: argparse.Namespace) -> argparse.Namespace:
 # Main script
 # ---------------------------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent
-DEFAULT_CHROME_BINARY = BASE_DIR / "chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
-DEFAULT_CHROMEDRIVER = BASE_DIR / "chrome-mac-arm64/chromedriver"
+PROJECT_ROOT = BASE_DIR.parent
+DEFAULT_CHROME_BINARY = Path("/Applications/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing")
+DEFAULT_CHROMEDRIVER = None
 
 
 def main():
